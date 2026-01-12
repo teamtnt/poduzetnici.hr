@@ -22,13 +22,18 @@ app.get('/api/entrepreneurs', (req, res) => {
 
 // Add a new entrepreneur
 app.post('/api/entrepreneurs', (req, res) => {
+  // Validate required fields
+  if (!req.body.name || !req.body.email || !req.body.business || !req.body.description || !req.body.location) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+  
   const entrepreneur = {
-    id: entrepreneurs.length + 1,
-    name: req.body.name,
-    email: req.body.email,
-    business: req.body.business,
-    description: req.body.description,
-    location: req.body.location,
+    id: Date.now() + Math.random(), // Better ID generation
+    name: req.body.name.trim(),
+    email: req.body.email.trim(),
+    business: req.body.business.trim(),
+    description: req.body.description.trim(),
+    location: req.body.location.trim(),
     createdAt: new Date()
   };
   entrepreneurs.push(entrepreneur);
@@ -42,11 +47,12 @@ app.get('/api/entrepreneurs/search', (req, res) => {
     return res.json(entrepreneurs);
   }
   
+  const searchTerm = query.toLowerCase();
   const results = entrepreneurs.filter(e => 
-    e.name.toLowerCase().includes(query.toLowerCase()) ||
-    e.business.toLowerCase().includes(query.toLowerCase()) ||
-    e.description.toLowerCase().includes(query.toLowerCase()) ||
-    e.location.toLowerCase().includes(query.toLowerCase())
+    (e.name && e.name.toLowerCase().includes(searchTerm)) ||
+    (e.business && e.business.toLowerCase().includes(searchTerm)) ||
+    (e.description && e.description.toLowerCase().includes(searchTerm)) ||
+    (e.location && e.location.toLowerCase().includes(searchTerm))
   );
   res.json(results);
 });
@@ -58,13 +64,18 @@ app.get('/api/services', (req, res) => {
 
 // Add a new service
 app.post('/api/services', (req, res) => {
+  // Validate required fields
+  if (!req.body.title || !req.body.description || !req.body.provider || !req.body.category || !req.body.contact) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+  
   const service = {
-    id: services.length + 1,
-    title: req.body.title,
-    description: req.body.description,
-    provider: req.body.provider,
-    category: req.body.category,
-    contact: req.body.contact,
+    id: Date.now() + Math.random(),
+    title: req.body.title.trim(),
+    description: req.body.description.trim(),
+    provider: req.body.provider.trim(),
+    category: req.body.category.trim(),
+    contact: req.body.contact.trim(),
     createdAt: new Date()
   };
   services.push(service);
@@ -78,12 +89,17 @@ app.get('/api/resources', (req, res) => {
 
 // Add a new resource
 app.post('/api/resources', (req, res) => {
+  // Validate required fields
+  if (!req.body.title || !req.body.description || !req.body.type) {
+    return res.status(400).json({ error: 'Title, description, and type are required' });
+  }
+  
   const resource = {
-    id: resources.length + 1,
-    title: req.body.title,
-    description: req.body.description,
-    type: req.body.type,
-    url: req.body.url,
+    id: Date.now() + Math.random(),
+    title: req.body.title.trim(),
+    description: req.body.description.trim(),
+    type: req.body.type.trim(),
+    url: req.body.url ? req.body.url.trim() : '',
     createdAt: new Date()
   };
   resources.push(resource);

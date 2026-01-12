@@ -1,3 +1,26 @@
+// Helper function to escape HTML and prevent XSS
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe
+        .toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// Helper function to sanitize URLs
+function sanitizeUrl(url) {
+    if (!url) return '';
+    // Only allow http:// and https:// URLs
+    const urlPattern = /^https?:\/\//i;
+    if (urlPattern.test(url)) {
+        return url;
+    }
+    return '';
+}
+
 // Tab switching
 function showTab(tabName) {
     // Hide all tabs
@@ -81,10 +104,10 @@ function displayEntrepreneurs(entrepreneurs) {
     
     container.innerHTML = entrepreneurs.map(e => `
         <div class="card">
-            <h3>${e.name}</h3>
-            <div class="meta">📍 ${e.location} | 💼 ${e.business}</div>
-            <div class="description">${e.description}</div>
-            <div class="badge">📧 ${e.email}</div>
+            <h3>${escapeHtml(e.name)}</h3>
+            <div class="meta">📍 ${escapeHtml(e.location)} | 💼 ${escapeHtml(e.business)}</div>
+            <div class="description">${escapeHtml(e.description)}</div>
+            <div class="badge">📧 ${escapeHtml(e.email)}</div>
         </div>
     `).join('');
 }
@@ -160,10 +183,10 @@ function displayServices(services) {
     
     container.innerHTML = services.map(s => `
         <div class="card">
-            <h3>${s.title}</h3>
-            <div class="meta">👤 ${s.provider} | 📂 ${s.category}</div>
-            <div class="description">${s.description}</div>
-            <div class="badge">📞 ${s.contact}</div>
+            <h3>${escapeHtml(s.title)}</h3>
+            <div class="meta">👤 ${escapeHtml(s.provider)} | 📂 ${escapeHtml(s.category)}</div>
+            <div class="description">${escapeHtml(s.description)}</div>
+            <div class="badge">📞 ${escapeHtml(s.contact)}</div>
         </div>
     `).join('');
 }
@@ -224,14 +247,19 @@ function displayResources(resources) {
         return;
     }
     
-    container.innerHTML = resources.map(r => `
-        <div class="card">
-            <h3>${r.title}</h3>
-            <div class="meta">📁 ${r.type}</div>
-            <div class="description">${r.description}</div>
-            ${r.url ? `<div class="badge">🔗 <a href="${r.url}" target="_blank" style="color: #667eea; text-decoration: none;">Posjeti link</a></div>` : ''}
-        </div>
-    `).join('');
+    container.innerHTML = resources.map(r => {
+        const safeUrl = sanitizeUrl(r.url);
+        const linkHtml = safeUrl ? `<div class="badge">🔗 <a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none;">Posjeti link</a></div>` : '';
+        
+        return `
+            <div class="card">
+                <h3>${escapeHtml(r.title)}</h3>
+                <div class="meta">📁 ${escapeHtml(r.type)}</div>
+                <div class="description">${escapeHtml(r.description)}</div>
+                ${linkHtml}
+            </div>
+        `;
+    }).join('');
 }
 
 // Initialize on page load
