@@ -1,3 +1,6 @@
+<?php
+    $latestAds = \App\Models\Ad::active()->latest()->with('user')->take(6)->get();
+?>
 <x-app-layout>
     <!-- Hero Section with Dark Gradient -->
     <div class="relative bg-dark-900 overflow-hidden">
@@ -13,45 +16,42 @@
                 Povežite se s tisućama hrvatskih poduzetnika. Pronađite partnere, klijente i resurse na jednom mjestu.
             </p>
             <div class="mt-10 max-w-xl mx-auto">
-                <div class="relative rounded-full shadow-sm">
-                    <input type="text" class="block w-full rounded-full border-0 py-4 pl-6 pr-32 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 shadow-xl" placeholder="Što tražite danas?">
-                    <div class="absolute inset-y-1 right-1 flex items-center">
-                        <button class="h-full rounded-full border-transparent bg-dark-800 py-2 px-6 text-sm font-medium text-white shadow-sm hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                            Pretraži
-                        </button>
+                <form action="{{ route('ads.index') }}" method="GET">
+                    <div class="relative rounded-full shadow-sm">
+                        <input type="text" name="q" class="block w-full rounded-full border-0 py-4 pl-6 pr-32 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 shadow-xl" placeholder="Što tražite danas?">
+                        <div class="absolute inset-y-1 right-1 flex items-center">
+                            <button type="submit" class="h-full rounded-full border-transparent bg-dark-800 py-2 px-6 text-sm font-medium text-white shadow-sm hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                Pretraži
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
+            </div>
+            
+            <div class="mt-8 text-gray-400 text-sm">
+                {{ __('Obrazac za predaju oglasa bit će implementiran uskoro') }}
             </div>
         </div>
     </div>
 
     <!-- Categories Cards (Floating) -->
     <div class="relative -mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="#" class="bg-white border border-gray-100 p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all group text-center">
-                <div class="text-primary-600 mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+        <div class="flex flex-wrap md:flex-nowrap justify-center gap-4">
+            @foreach([
+                ['name' => 'Prodaja poslovanja', 'color' => 'text-blue-600', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />'],
+                ['name' => 'Partnerstva', 'color' => 'text-purple-600', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />'],
+                ['name' => 'Oprema i alati', 'color' => 'text-indigo-600', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />'],
+                ['name' => 'Usluge', 'color' => 'text-orange-600', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />'],
+                ['name' => 'Oglasni prostor', 'color' => 'text-pink-600', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />'],
+                ['name' => 'Pitanja i odgovori', 'color' => 'text-teal-600', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />']
+            ] as $cat)
+            <a href="{{ route('ads.index', ['category' => $cat['name']]) }}" class="flex-1 w-full bg-white border border-gray-100 p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all group text-center block">
+                <div class="{{ $cat['color'] }} mb-3 group-hover:scale-110 transition-transform inline-block p-3 rounded-full bg-gray-50 group-hover:bg-white">
+                    <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $cat['icon'] !!}</svg>
                 </div>
-                <h3 class="text-dark-900 font-bold">IT & Razvoj</h3>
+                <h3 class="text-dark-900 font-bold text-lg group-hover:text-primary-600 transition-colors">{{ $cat['name'] }}</h3>
             </a>
-            <a href="#" class="bg-white border border-gray-100 p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all group text-center">
-                <div class="text-purple-600 mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
-                </div>
-                <h3 class="text-dark-900 font-bold">Marketing</h3>
-            </a>
-            <a href="#" class="bg-white border border-gray-100 p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all group text-center">
-                <div class="text-green-600 mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                </div>
-                <h3 class="text-dark-900 font-bold">Financije</h3>
-            </a>
-            <a href="#" class="bg-white border border-gray-100 p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all group text-center">
-                <div class="text-orange-600 mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                </div>
-                <h3 class="text-dark-900 font-bold">Usluge</h3>
-            </a>
+            @endforeach
         </div>
     </div>
 
@@ -68,105 +68,45 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Card 1 -->
-            <a href="{{ route('ads.show', 1) }}" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden block">
-                <div class="relative h-48 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            @forelse($latestAds as $ad)
+            <a href="{{ route('ads.show', $ad->id) }}" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden block">
+                <div class="relative h-48 overflow-hidden bg-gray-100 flex items-center justify-center">
+                     <!-- Placeholder or Logic for Image if we had one. Using pattern for now -->
+                     <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <div class="absolute top-4 left-4">
-                        <span class="bg-white/90 backdrop-blur text-dark-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">Nudim</span>
+                        <span class="bg-white/90 backdrop-blur text-dark-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                            {{ $ad->type == 'offer' ? 'Nudim' : 'Tražim' }}
+                        </span>
                     </div>
                 </div>
                 <div class="p-6">
                     <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-semibold text-primary-600 uppercase tracking-wider">IT & Razvoj</span>
-                        <span class="text-xs text-gray-400">2h</span>
+                        <span class="text-xs font-semibold text-primary-600 uppercase tracking-wider">{{ $ad->category }}</span>
+                        <span class="text-xs text-gray-400">{{ $ad->created_at->diffForHumans() }}</span>
                     </div>
-                    <h3 class="text-xl font-bold text-dark-900 mb-2 group-hover:text-primary-600 transition-colors">Izrada web shopova</h3>
-                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Kompletna izrada web trgovina na WordPress platformi. Ključ u ruke.</p>
+                    <h3 class="text-xl font-bold text-dark-900 mb-2 group-hover:text-primary-600 transition-colors">{{ $ad->title }}</h3>
+                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">{{ Str::limit($ad->description, 100) }}</p>
                     <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-dark-800 text-white flex items-center justify-center text-xs font-bold">MW</div>
-                            <span class="ml-2 text-sm font-medium text-gray-700">Marko Web</span>
+                            <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-bold">
+                                {{ substr($ad->user->firstname, 0, 1) }}{{ substr($ad->user->lastname, 0, 1) }}
+                            </div>
+                            <span class="ml-2 text-sm font-medium text-gray-700">{{ $ad->user->firstname }} {{ substr($ad->user->lastname, 0, 1) }}.</span>
                         </div>
-                        <span class="text-lg font-bold text-dark-900">1.200 €</span>
+                        <span class="text-lg font-bold text-dark-900">
+                            {{ $ad->price ? '€' . number_format($ad->price, 2) : 'Na upit' }}
+                        </span>
                     </div>
                 </div>
             </a>
-
-             <!-- Card 2 -->
-             <a href="{{ route('ads.show', 2) }}" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden block">
-                <div class="relative h-48 overflow-hidden bg-dark-800 flex items-center justify-center">
-                    <svg class="w-16 h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-dark-900/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">Tražim</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-semibold text-purple-600 uppercase tracking-wider">Nekretnine</span>
-                        <span class="text-xs text-gray-400">5h</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-dark-900 mb-2 group-hover:text-primary-600 transition-colors">Uredski prostor Centar</h3>
-                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Tražim uredski prostor od cca 50m2 u širem centru Zagreba.</p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xs font-bold">AB</div>
-                            <span class="ml-2 text-sm font-medium text-gray-700">Ana B.</span>
-                        </div>
-                        <span class="text-lg font-bold text-dark-900">do 800 €</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Card 3 -->
-            <a href="{{ route('ads.show', 3) }}" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden block">
-                <div class="relative h-48 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-white/90 backdrop-blur text-dark-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">Nudim</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Financije</span>
-                        <span class="text-xs text-gray-400">1d</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-dark-900 mb-2 group-hover:text-primary-600 transition-colors">Računovodstvene usluge</h3>
-                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Povoljno i stručno vođenje poslovnih knjiga za paušalne obrte i d.o.o.</p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">RK</div>
-                            <span class="ml-2 text-sm font-medium text-gray-700">Računovodstvo K.</span>
-                        </div>
-                        <span class="text-lg font-bold text-dark-900">100 €/mj</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Card 4 -->
-            <a href="{{ route('ads.show', 4) }}" class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden block">
-                <div class="relative h-48 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-dark-900/90 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">Tražim</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-semibold text-orange-600 uppercase tracking-wider">Usluge</span>
-                        <span class="text-xs text-gray-400">2d</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-dark-900 mb-2 group-hover:text-primary-600 transition-colors">Partner za EU projekte</h3>
-                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">Tražimo iskusnog konzultanta za pisanje i provedbu EU projekata za proizvodnu tvrtku.</p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-xs font-bold">PT</div>
-                            <span class="ml-2 text-sm font-medium text-gray-700">Proizvodnja T.</span>
-                        </div>
-                        <span class="text-lg font-bold text-dark-900">Po dogovoru</span>
-                    </div>
-                </div>
-            </a>
+            @empty
+            <div class="col-span-3 text-center py-12 text-gray-500">
+                <p>Trenutno nema aktivnih oglasa.</p>
+                <a href="{{ route('ads.create') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-500">
+                    Predaj prvi oglas
+                </a>
+            </div>
+            @endforelse
         </div>
     </div>
 </x-app-layout>

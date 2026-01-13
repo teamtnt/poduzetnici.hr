@@ -17,10 +17,17 @@
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <x-input-label for="firstname" :value="__('Ime')" />
+                <x-text-input id="firstname" name="firstname" type="text" class="mt-1 block w-full" :value="old('firstname', $user->firstname)" required autofocus autocomplete="given-name" />
+                <x-input-error class="mt-2" :messages="$errors->get('firstname')" />
+            </div>
+            <div>
+                <x-input-label for="lastname" :value="__('Prezime')" />
+                <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full" :value="old('lastname', $user->lastname)" required autocomplete="family-name" />
+                <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
+            </div>
         </div>
 
         <div>
@@ -45,6 +52,22 @@
                     @endif
                 </div>
             @endif
+        </div>
+
+        <div>
+            <x-input-label for="phone" :value="__('Broj telefona')" />
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autocomplete="tel" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
+        <div>
+            <x-input-label for="preferred_contact_method" :value="__('Preferirani način kontakta')" />
+            <select id="preferred_contact_method" name="preferred_contact_method" class="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm">
+                <option value="email" {{ old('preferred_contact_method', $user->preferred_contact_method) === 'email' ? 'selected' : '' }}>Email</option>
+                <option value="phone" {{ old('preferred_contact_method', $user->preferred_contact_method) === 'phone' ? 'selected' : '' }}>Telefon</option>
+                <option value="platform" {{ old('preferred_contact_method', $user->preferred_contact_method) === 'platform' ? 'selected' : '' }}>Platforma (Inbox)</option>
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('preferred_contact_method')" />
         </div>
 
         <div class="flex items-center gap-4">

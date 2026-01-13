@@ -7,17 +7,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/ads', function () {
-    return view('ads.index');
-})->name('ads.index');
+use App\Http\Controllers\AdController;
 
-Route::get('/ads/create', function () {
-    return view('ads.create'); // We haven't created this yet, but the link exists
-})->name('ads.create');
-
-Route::get('/ads/{id}', function ($id) {
-    return view('ads.show');
-})->name('ads.show');
+Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
+Route::get('/ads/create', [AdController::class, 'create'])->name('ads.create')->middleware('auth');
+Route::post('/ads', [AdController::class, 'store'])->name('ads.store')->middleware('auth');
+Route::get('/ads/{id}', [AdController::class, 'show'])->name('ads.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
