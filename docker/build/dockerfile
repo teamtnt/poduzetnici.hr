@@ -1,0 +1,134 @@
+# Build stage
+FROM debian:trixie-slim AS builder
+
+
+
+# Install system dependencies
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    unzip \
+    git \
+    openssh-client \
+    curl \
+    gnupg \
+    php8.4-cli \
+    php8.4-curl \
+    php8.4-dom \
+    php8.4-zip \
+    php8.4-mbstring \
+    php8.4-gd \
+    php8.4-soap \
+    default-mysql-client && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+COPY --from=composer:2.9.2 /usr/bin/composer /usr/local/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Set working directory
+WORKDIR /app
+COPY . /app
+
+RUN composer install --ignore-platform-reqs --no-dev \ 
+    && rm -rf docker \
+    && chmod -R 555 /app \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
+
+# Build-time optimize if APP_KEY provided; otherwise skip to avoid invalid cached config.
+
+
+# Production image
+FROM debian:trixie-slim AS prod
+
+# Set timezone
+ENV TZ=Europe/Zagreb
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Install system dependencies
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    nginx \
+    supervisor \
+    tini \
+    php8.4 \
+    php8.4-common \
+    php8.4-fpm \
+    php8.4-curl \
+    php8.4-zip \
+    php8.4-mbstring \
+    php8.4-bcmath \
+    php8.4-ldap \
+    php8.4-pgsql \
+    php8.4-mysql \
+    php8.4-dom \
+    php8.4-gd \
+    php8.4-soap \
+    && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/*
+
+# Drop default FPM pool configs; we'll provide our own.
+RUN rm -f /etc/php/8.4/fpm/pool.d/*.conf
+
+# Set working directory
+WORKDIR /app
+
+# Copy application source
+COPY --from=builder /app /app
+
+# Copy configuration files
+COPY docker/config/php/php-fpm.conf /etc/php/8.4/fpm/php-fpm.conf
+COPY docker/config/php/pool.conf /etc/php/8.4/fpm/pool.d/www.conf
+COPY docker/config/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY docker/config/nginx/default.conf /etc/nginx/sites-available/default
+COPY docker/config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY docker/build/container-start.sh /docker-entrypoint.sh
+COPY docker/build/migrate.sh /migrate.sh
+RUN chmod +x /docker-entrypoint.sh /migrate.sh
+
+
+# Create non-root user and set permissions
+RUN useradd --create-home --shell /bin/bash --uid 1000 appuser && \
+    chown -R appuser:appuser /app && \
+    mkdir -p /app/storage/logs /app/storage/framework/views /app/storage/framework/cache /app/storage/framework/sessions && \
+    chown -R appuser:appuser /app/storage && chmod -R 775 /app/storage && \
+    mkdir -p /run/php && chown appuser:appuser /run/php && \
+    setcap 'cap_net_bind_service=+ep' /usr/sbin/nginx
+
+RUN mkdir -p /var/log && touch /var/log/php8.4-fpm.log && chown appuser:appuser /var/log/php8.4-fpm.log && chmod 644 /var/log/php8.4-fpm.log
+
+# Expose port 8080
+EXPOSE 8080
+
+USER 1000:0
+
+STOPSIGNAL SIGQUIT
+
+CMD ["/usr/bin/tini", "--", "/bin/bash", "/docker-entrypoint.sh"]
+
+
+
+# Development image
+FROM prod AS dev
+
+# Install Composer
+COPY --from=builder /usr/local/bin/composer /usr/local/bin/composer
+
+USER 0:0
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    unzip \
+    default-mysql-client \
+    openssh-client \
+    iputils-ping \
+    telnet \
+    git \
+    wget \
+    curl \
+    && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/*
+
+USER 1000:0 
+
+
+
+# Production image is the default if no specific target is specified
+FROM prod

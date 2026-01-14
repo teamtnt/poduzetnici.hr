@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -72,9 +75,7 @@
         ]
     },
     "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
+        "releaseDate": "14.01.2026"
     },
     "config": {
         "optimize-autoloader": true,
@@ -86,5 +87,6 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "version": "1.0.1"
 }
