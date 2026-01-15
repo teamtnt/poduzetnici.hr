@@ -8,47 +8,20 @@
             <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl"></div>
         </div>
 
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-32 sm:pb-36 text-center">
+        <div class="relative z-10 max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-16 pb-40 sm:pt-32 sm:pb-56 text-center">
 
 
-            <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-8 font-display leading-tight">
-                Moderni alati za <br class="hidden sm:block" />
-                <span class="text-primary-400">hrvatske poduzetnike</span>
+            <h1 class="mt-8 sm:mt-12 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-8 font-display leading-tight">
+                Pametni alati za <br class="hidden sm:block" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-blue-500">jednostavnije poslovanje</span>
             </h1>
-            
+
             <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-300 mb-12 leading-relaxed">
                 Pojednostavite poslovanje uz besplatne, sigurne i brze alate.
                 <span class="text-white font-medium">Bez registracije. Bez naknada.</span>
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#alati" class="w-full sm:w-auto px-8 py-4 bg-primary-500 hover:bg-primary-400 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 hover:-translate-y-1">
-                    Isprobaj besplatno
-                </a>
-                <a href="#kako-radi" class="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl font-semibold text-lg transition-all hover:-translate-y-1 backdrop-blur-sm">
-                    Kako radi?
-                </a>
-            </div>
 
-            <!-- Trust / Stats -->
-            <div class="mt-16 pt-8 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                <div>
-                    <div class="text-2xl font-bold text-white font-display">100%</div>
-                    <div class="text-sm text-gray-500 mt-1">Lokalna obrada</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold text-white font-display">CSV/XML</div>
-                    <div class="text-sm text-gray-500 mt-1">Podržani formati</div>
-                </div>
-                 <div>
-                    <div class="text-2xl font-bold text-white font-display">0€</div>
-                    <div class="text-sm text-gray-500 mt-1">Zauvijek besplatno</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold text-white font-display">GDPR</div>
-                    <div class="text-sm text-gray-500 mt-1">Sukladno</div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -57,44 +30,44 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-12">
                 <div>
-                    <h2 class="text-3xl font-bold text-dark-900 font-display">Dostupni alati</h2>
-                    <p class="text-gray-500 mt-2">Odaberite alat koji vam treba</p>
+                    <h2 class="text-3xl font-bold text-dark-900 mb-6 font-display">Odaberite alat koji vam treba</h2>
                 </div>
+
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- HUB3 Generator Card (Premium Style) -->
                 <a href="{{ route('tools.hub3-generator') }}" class="group relative bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col h-full hover:-translate-y-1 overflow-hidden">
-                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-400 to-primary-600"></div>
-                     
-                     <div class="flex items-start justify-between mb-6">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-400 to-primary-600"></div>
+
+                    <div class="flex items-start justify-between mb-6">
                         <div class="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-all duration-300">
-                           <svg class="w-8 h-8 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-                               <path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 0h2v3h-2v-3zm3 3h3v4h-4v-2h2v-1h-1v-1zm-3 1h2v1h-2v-1zm0 2h2v2h-2v-2zm3 1h1v1h-1v-1z"/>
-                           </svg>
+                            <svg class="w-8 h-8 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 0h2v3h-2v-3zm3 3h3v4h-4v-2h2v-1h-1v-1zm-3 1h2v1h-2v-1zm0 2h2v2h-2v-2zm3 1h1v1h-1v-1z" />
+                            </svg>
                         </div>
                         <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Besplatno</span>
-                     </div>
+                    </div>
 
-                     <h3 class="text-2xl font-bold text-dark-900 mb-3 group-hover:text-primary-600 transition-colors">HUB3 Generator</h3>
-                     <p class="text-gray-500 mb-6 flex-grow leading-relaxed">
-                         Pretvorite podatke u standardizirani 2D barkod. Podrška za XML učitavanje, preglede i validaciju.
-                     </p>
-                     
-                     <div class="flex flex-wrap gap-2 mb-8">
+                    <h3 class="text-2xl font-bold text-dark-900 mb-3 group-hover:text-primary-600 transition-colors">HUB3 Generator</h3>
+                    <p class="text-gray-500 mb-6 flex-grow leading-relaxed">
+                        Pretvorite podatke u standardizirani 2D barkod. Podrška za XML učitavanje, preglede i validaciju.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mb-8">
                         <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">XML Import</span>
                         <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">Validacija</span>
                         <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">PDF Export</span>
-                     </div>
+                    </div>
 
-                     <div class="mt-auto">
+                    <div class="mt-auto">
                         <span class="w-full flex items-center justify-center gap-2 bg-white border-2 border-primary-100 text-primary-700 font-semibold py-3 px-4 rounded-xl group-hover:bg-primary-600 group-hover:border-primary-600 group-hover:text-white transition-all">
                             Pokreni generator
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </span>
-                     </div>
+                    </div>
                 </a>
 
                 <!-- HUB3 Batch Generator Card -->
@@ -167,48 +140,48 @@
 
                 <!-- Upcoming Tool 1 -->
                 <div class="relative bg-white rounded-2xl p-8 border border-gray-100 shadow-sm flex flex-col h-full opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                     <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-start justify-between mb-6">
                         <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
-                           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                           </svg>
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
                         </div>
                         <span class="bg-gray-100 text-gray-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Uskoro</span>
-                     </div>
+                    </div>
 
-                     <h3 class="text-2xl font-bold text-gray-800 mb-3">Kalkulator Plaća</h3>
-                     <p class="text-gray-500 mb-6 flex-grow leading-relaxed">
-                         Izračun neto i bruto plaće, troškova poslodavca i neoporezivih primitaka.
-                     </p>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Kalkulator Plaća</h3>
+                    <p class="text-gray-500 mb-6 flex-grow leading-relaxed">
+                        Izračun neto i bruto plaće, troškova poslodavca i neoporezivih primitaka.
+                    </p>
 
-                     <div class="mt-auto">
+                    <div class="mt-auto">
                         <button disabled class="w-full flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 text-gray-400 font-semibold py-3 px-4 rounded-xl cursor-not-allowed">
                             U izradi...
                         </button>
-                     </div>
+                    </div>
                 </div>
 
                 <!-- Upcoming Tool 2 -->
                 <div class="relative bg-white rounded-2xl p-8 border border-gray-100 shadow-sm flex flex-col h-full opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                     <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-start justify-between mb-6">
                         <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
-                           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-                           </svg>
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
                         </div>
                         <span class="bg-gray-100 text-gray-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Uskoro</span>
-                     </div>
+                    </div>
 
-                     <h3 class="text-2xl font-bold text-gray-800 mb-3">PDV Asistent</h3>
-                     <p class="text-gray-500 mb-6 flex-grow leading-relaxed">
-                         Provjera PDV ID broja, izračun osnovice i poreza za domaće i inozemne transakcije.
-                     </p>
-                     
-                     <div class="mt-auto">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">PDV Asistent</h3>
+                    <p class="text-gray-500 mb-6 flex-grow leading-relaxed">
+                        Provjera PDV ID broja, izračun osnovice i poreza za domaće i inozemne transakcije.
+                    </p>
+
+                    <div class="mt-auto">
                         <button disabled class="w-full flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 text-gray-400 font-semibold py-3 px-4 rounded-xl cursor-not-allowed">
                             U izradi...
                         </button>
-                     </div>
+                    </div>
                 </div>
             </div>
         </div>
