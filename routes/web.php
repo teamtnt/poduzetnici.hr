@@ -5,6 +5,7 @@ use App\Http\Controllers\AdvertisingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProfileController;
+use App\Http\Controllers\UploadController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +33,9 @@ Route::get('/ads/{id}', [AdController::class, 'show'])->name('ads.show');
 Route::get('/ads/{id}/edit', [AdController::class, 'edit'])->name('ads.edit')->middleware('auth');
 Route::patch('/ads/{id}', [AdController::class, 'update'])->name('ads.update')->middleware('auth');
 Route::delete('/ads/{id}', [AdController::class, 'destroy'])->name('ads.destroy')->middleware('auth');
+
+// Upload signed URL for direct JS upload to DigitalOcean Spaces
+Route::post('/upload/signed-url', [UploadController::class, 'signedUrl'])->name('upload.signed-url')->middleware('auth');
 
 Route::get('/dashboard', function () {
     $user = auth()->user();

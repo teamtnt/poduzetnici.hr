@@ -16,6 +16,7 @@ class Ad extends Model
         'title',
         'slug',
         'description',
+        'images',
         'price',
         'type',
         'category',
@@ -29,6 +30,7 @@ class Ad extends Model
     protected $casts = [
         'expires_at' => 'datetime',
         'price' => 'decimal:2',
+        'images' => 'array',
     ];
 
     public function user(): BelongsTo

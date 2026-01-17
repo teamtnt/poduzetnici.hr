@@ -25,58 +25,125 @@
                         </div>
                     </div>
 
-                    <div class="prose max-w-none mb-8">
-                        {!! Str::markdown(e($ad->description)) !!}
+                    {{-- Image Gallery --}}
+                    @if($ad->images && count($ad->images) > 0)
+                        <div class="mb-8" x-data="{ activeImage: 0 }">
+                            {{-- Main Image --}}
+                            <div class="aspect-video rounded-xl overflow-hidden bg-gray-100 mb-4">
+                                @foreach($ad->images as $index => $image)
+                                    <img 
+                                        src="{{ $image }}" 
+                                        alt="{{ $ad->title }} - slika {{ $index + 1 }}"
+                                        class="w-full h-full object-contain"
+                                        x-show="activeImage === {{ $index }}"
+                                        x-transition:enter="transition ease-out duration-300"
+                                        x-transition:enter-start="opacity-0"
+                                        x-transition:enter-end="opacity-100"
+                                    >
+                                @endforeach
+                            </div>
+                            
+                            {{-- Thumbnails --}}
+                            @if(count($ad->images) > 1)
+                                <div class="flex gap-2 overflow-x-auto pb-2">
+                                    @foreach($ad->images as $index => $image)
+                                        <button 
+                                            type="button"
+                                            @click="activeImage = {{ $index }}"
+                                            class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all"
+                                            :class="activeImage === {{ $index }} ? 'border-primary-500 ring-2 ring-primary-200' : 'border-gray-200 hover:border-gray-300'"
+                                        >
+                                            <img src="{{ $image }}" alt="Thumbnail {{ $index + 1 }}" class="w-full h-full object-cover">
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <div class="prose prose-lg max-w-none mb-8 prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:marker:text-primary-500">
+                        {!! Str::markdown($ad->description) !!}
                     </div>
 
                     <div class="border-t border-gray-200 pt-6 mt-6">
-                        <h3 class="text-lg font-semibold mb-4">{{ __('Kontakt informacije') }}</h3>
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xl mr-4">
-                                @if($ad->is_anonymous)
-                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                                @else
+                        @if($ad->is_anonymous)
+                            {{-- Anonymous ad - show contact button --}}
+                            <div class="flex items-center justify-between bg-gray-50 rounded-xl p-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 mr-4">
+                                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-900">{{ __('Anonimni oglašivač') }}</div>
+                                        <div class="text-sm text-gray-500">{{ __('Kontaktirajte putem platforme') }}</div>
+                                    </div>
+                                </div>
+                                @if(auth()->check() && auth()->id() !== $ad->user_id)
+                                    <a href="#contact-form" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                        {{ __('Kontaktiraj') }}
+                                    </a>
+                                @elseif(!auth()->check())
+                                    <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                                        {{ __('Prijavi se za kontakt') }}
+                                    </a>
+                                @endif
+                            </div>
+                        @else
+                            <h3 class="text-lg font-semibold mb-4">{{ __('Kontakt informacije') }}</h3>
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xl mr-4">
                                     {{ substr($ad->user->firstname, 0, 1) }}{{ substr($ad->user->lastname, 0, 1) }}
-                                @endif
-                            </div>
-                            <div>
-                                <div class="font-bold">
-                                    @if($ad->is_anonymous)
-                                        {{ __('Anonimni oglašivač') }}
-                                    @else
+                                </div>
+                                <div>
+                                    <div class="font-bold">
                                         {{ $ad->user->firstname }} {{ $ad->user->lastname }}
+                                    </div>
+                                    
+                                    @if($ad->user->company_name)
+                                        <div class="text-sm text-gray-600">{{ $ad->user->company_name }}</div>
                                     @endif
-                                </div>
-                                
-                                @if(!$ad->is_anonymous && $ad->user->company_name)
-                                    <div class="text-sm text-gray-600">{{ $ad->user->company_name }}</div>
-                                @endif
 
-                                <div class="mt-1 text-primary-600 font-medium">
-                                    @if($ad->user->preferred_contact_method === 'phone' && $ad->user->phone)
-                                        <a href="tel:{{ $ad->user->phone }}" class="flex items-center hover:underline">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                                            {{ $ad->user->phone }}
-                                        </a>
-                                    @elseif($ad->user->preferred_contact_method === 'platform')
-                                        <span class="flex items-center text-gray-600 bg-gray-100 px-3 py-1 rounded-full text-xs">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                            {{ __('Kontaktirajte putem platforme') }}
-                                        </span>
-                                    @else
-                                         <a href="mailto:{{ $ad->user->email }}" class="flex items-center hover:underline">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                            {{ $ad->user->email }}
-                                        </a>
-                                    @endif
+                                    <div class="mt-1 text-primary-600 font-medium">
+                                        @if($ad->user->preferred_contact_method === 'phone' && $ad->user->phone)
+                                            <a href="tel:{{ $ad->user->phone }}" class="flex items-center hover:underline">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                                {{ $ad->user->phone }}
+                                            </a>
+                                        @elseif($ad->user->preferred_contact_method === 'platform')
+                                            @if(auth()->check() && auth()->id() !== $ad->user_id)
+                                                <a href="#contact-form" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                                    {{ __('Kontaktiraj') }}
+                                                </a>
+                                            @elseif(!auth()->check())
+                                                <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                                    {{ __('Prijavi se za kontakt') }}
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a href="mailto:{{ $ad->user->email }}" class="flex items-center hover:underline">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                                {{ $ad->user->email }}
+                                            </a>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
-                        <!-- Contact Form -->
+                        {{-- Contact Form --}}
                         @if(auth()->check() && auth()->id() !== $ad->user_id)
-                            <div class="mt-8 border-t border-gray-100 pt-8">
-                                <h4 class="text-base font-semibold text-gray-900 mb-4">{{ __('Pošalji poruku') }}</h4>
+                            <div id="contact-form" class="mt-8 border-t border-gray-100 pt-8 scroll-mt-24">
+                                <h4 class="text-base font-semibold text-gray-900 mb-4">
+                                    @if($ad->is_anonymous)
+                                        {{ __('Kontaktirajte oglašivača') }}
+                                    @else
+                                        {{ __('Pošalji poruku') }}
+                                    @endif
+                                </h4>
                                 
                                 @if(session('status'))
                                     <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
@@ -105,10 +172,23 @@
 
                                     <div class="flex justify-end">
                                         <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                                            Pošalji poruku
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                            {{ __('Pošalji poruku') }}
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                        @elseif(!auth()->check())
+                            {{-- Show login prompt for guests --}}
+                            <div class="mt-8 border-t border-gray-100 pt-8">
+                                <div class="bg-gray-50 rounded-xl p-6 text-center">
+                                    <svg class="w-12 h-12 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                    <h4 class="text-base font-semibold text-gray-900 mb-2">{{ __('Želite kontaktirati oglašivača?') }}</h4>
+                                    <p class="text-sm text-gray-600 mb-4">{{ __('Prijavite se kako biste mogli slati poruke.') }}</p>
+                                    <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700">
+                                        {{ __('Prijava') }}
+                                    </a>
+                                </div>
                             </div>
                         @endif
                     </div>

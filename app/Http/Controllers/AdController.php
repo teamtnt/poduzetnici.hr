@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
 {
@@ -29,14 +30,19 @@ class AdController extends Controller
             'price' => 'nullable|numeric|min:0',
             'duration_days' => 'required|integer|in:7,14,30',
             'is_anonymous' => 'nullable|boolean',
+            'uploaded_images' => 'nullable|array|max:5',
+            'uploaded_images.*' => 'url',
         ]);
 
         $slug = \Illuminate\Support\Str::slug($validated['title']).'-'.uniqid();
+
+        $images = $request->input('uploaded_images', []);
 
         $request->user()->ads()->create([
             'title' => $validated['title'],
             'slug' => $slug,
             'description' => $validated['description'],
+            'images' => $images,
             'type' => $validated['type'],
             'category' => $validated['category'],
             'location' => $validated['location'],
@@ -93,7 +99,15 @@ class AdController extends Controller
             'category' => 'required|string|in:Prodaja poslovanja,Partnerstva,Oprema i alati,Usluge,Oglasni prostor,Pitanja i odgovori',
             'price' => 'nullable|numeric|min:0',
             'is_anonymous' => 'nullable|boolean',
+            'uploaded_images' => 'nullable|array|max:5',
+            'uploaded_images.*' => 'url',
+            'existing_images' => 'nullable|array',
         ]);
+
+        $images = array_merge(
+            $request->input('existing_images', []),
+            $request->input('uploaded_images', [])
+        );
 
         $ad->update([
             'title' => $validated['title'],
@@ -102,6 +116,7 @@ class AdController extends Controller
             'category' => $validated['category'],
             'price' => $validated['price'],
             'is_anonymous' => $request->boolean('is_anonymous'),
+            'images' => array_slice($images, 0, 5),
         ]);
 
         return redirect()->route('ads.show', $ad->id)->with('status', 'Oglas uspješno ažuriran!');
