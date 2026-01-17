@@ -7,6 +7,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms');
+
 use App\Http\Controllers\AdController;
 
 Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
@@ -46,6 +54,10 @@ Route::get('/alati/kreditni-kalkulator', function () {
 Route::get('/alati/bruto-neto-kalkulator', function () {
     return view('tools.bruto-neto-kalkulator');
 })->name('tools.bruto-neto-kalkulator');
+
+Route::get('/facebook/data-deletion', function () {
+    return view('facebook.data-deletion');
+})->name('facebook.data-deletion');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
