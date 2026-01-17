@@ -38,18 +38,18 @@
                     </div>
 
                     <!-- Name -->
-                    <div class="grid grid-cols-2 gap-4">
+                    <div x-show="accountType === 'person'" class="grid grid-cols-2 gap-4">
                         <div>
                             <x-input-label for="firstname" :value="__('Ime')" />
                             <div class="mt-1">
-                                <x-text-input id="firstname" class="block w-full" type="text" name="firstname" :value="old('firstname')" required autofocus autocomplete="given-name" />
+                                <x-text-input id="firstname" class="block w-full" type="text" name="firstname" :value="old('firstname')" autofocus autocomplete="given-name" />
                             </div>
                             <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
                         </div>
                         <div>
                             <x-input-label for="lastname" :value="__('Prezime')" />
                             <div class="mt-1">
-                                <x-text-input id="lastname" class="block w-full" type="text" name="lastname" :value="old('lastname')" required autocomplete="family-name" />
+                                <x-text-input id="lastname" class="block w-full" type="text" name="lastname" :value="old('lastname')" autocomplete="family-name" />
                             </div>
                             <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
                         </div>

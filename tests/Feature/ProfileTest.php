@@ -23,7 +23,9 @@ class ProfileTest extends TestCase
 
     public function test_profile_information_can_be_updated(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'account_type' => 'person',
+        ]);
 
         $response = $this
             ->actingAs($user)
@@ -45,9 +47,36 @@ class ProfileTest extends TestCase
         $this->assertNull($user->email_verified_at);
     }
 
+    public function test_company_profile_information_can_be_updated(): void
+    {
+        $user = User::factory()->create([
+            'account_type' => 'company',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->patch('/profile', [
+                'company_name' => 'Test Company d.o.o.',
+                'oib' => '12345678901',
+                'email' => 'company@example.com',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/profile');
+
+        $user->refresh();
+
+        $this->assertSame('Test Company d.o.o.', $user->company_name);
+        $this->assertSame('12345678901', $user->oib);
+        $this->assertSame('company@example.com', $user->email);
+    }
+
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'account_type' => 'person',
+        ]);
 
         $response = $this
             ->actingAs($user)

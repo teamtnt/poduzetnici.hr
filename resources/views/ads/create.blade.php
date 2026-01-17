@@ -59,14 +59,49 @@
                                 </div>
                                 <x-input-error :messages="$errors->get('category')" class="mt-2" />
                             </div>
+                            
+                            <!-- Location -->
+                            <div>
+                                <x-input-label for="location" :value="__('Lokacija')" class="text-lg font-semibold text-gray-700" />
+                                <x-text-input 
+                                    id="location" 
+                                    class="block mt-2 w-full p-4 border-gray-200 focus:border-primary-500 focus:ring-primary-500 rounded-xl shadow-sm bg-gray-50" 
+                                    type="text" 
+                                    name="location" 
+                                    :value="old('location')" 
+                                    placeholder="npr. Zagreb, Split..." 
+                                    required 
+                                />
+                                <x-input-error :messages="$errors->get('location')" class="mt-2" />
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Price -->
-                            <div>
-                                <x-input-label for="price" :value="__('Cijena (€)')" class="text-lg font-semibold text-gray-700" />
-                                <x-text-input id="price" class="block mt-2 w-full p-4 border-gray-200 focus:border-primary-500 focus:ring-primary-500 rounded-xl shadow-sm bg-gray-50" type="number" step="0.01" name="price" :value="old('price')" placeholder="0.00" />
-                                <p class="text-xs text-gray-500 mt-2 ml-1">Ostavite prazno za "Po dogovoru"</p>
+                            <div x-data="{ priceOnRequest: false }">
+                                <div class="flex justify-between items-center mb-2">
+                                    <x-input-label for="price" :value="__('Cijena (€)')" class="text-lg font-semibold text-gray-700" />
+                                    
+                                    <label class="inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" x-model="priceOnRequest" class="rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50">
+                                        <span class="ml-2 text-sm text-gray-600 font-medium">Cijena na upit</span>
+                                    </label>
+                                </div>
+                                <div class="relative">
+                                    <x-text-input 
+                                        id="price" 
+                                        class="block w-full p-4 border-gray-200 focus:border-primary-500 focus:ring-primary-500 rounded-xl shadow-sm bg-gray-50 transition-colors disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" 
+                                        type="number" 
+                                        step="0.01" 
+                                        name="price" 
+                                        :value="old('price')" 
+                                        placeholder="0.00"
+                                        ::disabled="priceOnRequest"
+                                        ::value="priceOnRequest ? '' : $el.value"
+                                    />
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2 ml-1" x-show="!priceOnRequest">Unesite iznos u eurima.</p>
+                                <p class="text-xs text-primary-600 mt-2 ml-1 font-medium" x-show="priceOnRequest" style="display: none;">Kupci će vas kontaktirati za cijenu.</p>
                                 <x-input-error :messages="$errors->get('price')" class="mt-2" />
                             </div>
 
@@ -91,6 +126,9 @@
                         <div>
                             <x-input-label for="description" :value="__('Detaljan opis')" class="text-lg font-semibold text-gray-700" />
                             <textarea id="description" name="description" rows="8" class="block mt-2 w-full p-4 border-gray-200 focus:border-primary-500 focus:ring-primary-500 rounded-xl shadow-sm bg-gray-50" placeholder="Opišite detaljno što nudite ili tražite..." required>{{ old('description') }}</textarea>
+                            <p class="mt-2 text-sm text-gray-500">
+                                Podržan je <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" class="text-primary-600 hover:text-primary-700 underline">Markdown format</a> za stiliziranje teksta (podebljano, liste, itd.).
+                            </p>
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 

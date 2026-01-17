@@ -24,12 +24,18 @@ class User extends Authenticatable
         'password',
         'account_type',
         'company_name',
+        'industry',
         'oib',
         'phone',
         'preferred_contact_method',
         'google_id',
         'facebook_id',
         'avatar',
+        'slug',
+        'is_public',
+        'description',
+        'address',
+        'web',
     ];
 
     /**
@@ -52,11 +58,27 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_public' => 'boolean',
         ];
     }
 
     public function ads(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Ad::class);
+    }
+
+    public function receivedMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Message::class, 'recipient_id');
+    }
+
+    public function sentMessages(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function unreadMessagesCount(): int
+    {
+        return $this->receivedMessages()->unread()->count();
     }
 }

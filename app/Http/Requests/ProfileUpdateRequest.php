@@ -15,9 +15,9 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
+        $isCompany = $this->user()->account_type === 'company';
+
+        $rules = [
             'email' => [
                 'required',
                 'string',
@@ -27,7 +27,23 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'phone' => ['nullable', 'string', 'max:20'],
-            'preferred_contact_method' => ['required', 'string', 'in:email,phone,platform'],
+            'preferred_contact_method' => ['nullable', 'string', 'in:email,phone,platform'],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'is_public' => ['nullable', 'boolean'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'web' => ['nullable', 'url', 'max:255'],
+            'industry' => ['nullable', 'string', 'max:255'],
         ];
+
+        if ($isCompany) {
+            $rules['company_name'] = ['nullable', 'string', 'max:255'];
+            $rules['oib'] = ['nullable', 'string', 'max:11'];
+        } else {
+            $rules['firstname'] = ['nullable', 'string', 'max:255'];
+            $rules['lastname'] = ['nullable', 'string', 'max:255'];
+        }
+
+        return $rules;
     }
 }

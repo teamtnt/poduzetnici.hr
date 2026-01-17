@@ -9,8 +9,12 @@
                                 {{ $ad->type === 'offer' ? 'Nudim' : 'Tražim' }}
                             </span>
                             <h1 class="text-3xl font-bold text-gray-900">{{ $ad->title }}</h1>
-                            <div class="flex items-center mt-2 text-gray-600">
-                                <span class="mr-4">{{ $ad->category }}</span>
+                            <div class="flex items-center mt-2 text-gray-600 gap-4">
+                                <span>{{ $ad->category }}</span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    {{ $ad->location }}
+                                </span>
                                 <span>{{ $ad->created_at->format('d.m.Y H:i') }}</span>
                             </div>
                         </div>
@@ -22,7 +26,7 @@
                     </div>
 
                     <div class="prose max-w-none mb-8">
-                        {!! nl2br(e($ad->description)) !!}
+                        {!! Str::markdown(e($ad->description)) !!}
                     </div>
 
                     <div class="border-t border-gray-200 pt-6 mt-6">
@@ -68,6 +72,45 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Contact Form -->
+                        @if(auth()->check() && auth()->id() !== $ad->user_id)
+                            <div class="mt-8 border-t border-gray-100 pt-8">
+                                <h4 class="text-base font-semibold text-gray-900 mb-4">{{ __('Pošalji poruku') }}</h4>
+                                
+                                @if(session('status'))
+                                    <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
+                                        {{ session('status') }}
+                                    </div>
+                                @endif
+
+                                <form action="{{ route('messages.store') }}" method="POST" class="space-y-4">
+                                    @csrf
+                                    <input type="hidden" name="ad_id" value="{{ $ad->id }}">
+                                    
+                                    <div>
+                                        <label for="content" class="sr-only">Poruka</label>
+                                        <textarea
+                                            id="content"
+                                            name="content"
+                                            rows="4"
+                                            class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                            placeholder="Napišite svoju poruku ovdje..."
+                                            required
+                                        >{{ old('content') }}</textarea>
+                                        @error('content')
+                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="flex justify-end">
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                            Pošalji poruku
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -61,6 +61,55 @@
         </div>
 
         <div>
+            <x-input-label for="industry" :value="__('Djelatnost / Kategorija')" />
+            <select id="industry" name="industry" class="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm">
+                <option value="">Odaberite djelatnost</option>
+                @foreach([
+                    'IT / Programiranje',
+                    'Dizajn',
+                    'Marketing',
+                    'Računovodstvo',
+                    'Pravo',
+                    'Građevina',
+                    'Usluge čišćenja',
+                    'Edukacija',
+                    'Zdravlje i ljepota',
+                    'Turizam i ugostiteljstvo',
+                    'Prijevoz i logistika',
+                    'Ostalo'
+                ] as $ind)
+                    <option value="{{ $ind }}" {{ old('industry', $user->industry) === $ind ? 'selected' : '' }}>{{ $ind }}</option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('industry')" />
+        </div>
+
+        <div>
+            <x-input-label for="slug" :value="__('Korisničko ime (Slug)')" />
+            <p class="text-xs text-gray-500 mb-1">Ovo će se koristiti za vašu javnu URL adresu (npr. poduzetnici.hr/profile/moj-slug)</p>
+            <x-text-input id="slug" name="slug" type="text" class="mt-1 block w-full" :value="old('slug', $user->slug)" />
+            <x-input-error class="mt-2" :messages="$errors->get('slug')" />
+        </div>
+
+        <div>
+            <x-input-label for="description" :value="__('Kratki opis')" />
+            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm" rows="3">{{ old('description', $user->description) }}</textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('description')" />
+        </div>
+
+        <div>
+            <x-input-label for="address" :value="__('Adresa')" />
+            <x-text-input id="address" name="address" type="text" class="mt-1 block w-full" :value="old('address', $user->address)" />
+            <x-input-error class="mt-2" :messages="$errors->get('address')" />
+        </div>
+
+        <div>
+            <x-input-label for="web" :value="__('Web stranica')" />
+            <x-text-input id="web" name="web" type="url" class="mt-1 block w-full" :value="old('web', $user->web)" placeholder="https://..." />
+            <x-input-error class="mt-2" :messages="$errors->get('web')" />
+        </div>
+
+        <div>
             <x-input-label for="preferred_contact_method" :value="__('Preferirani način kontakta')" />
             <select id="preferred_contact_method" name="preferred_contact_method" class="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm">
                 <option value="email" {{ old('preferred_contact_method', $user->preferred_contact_method) === 'email' ? 'selected' : '' }}>Email</option>

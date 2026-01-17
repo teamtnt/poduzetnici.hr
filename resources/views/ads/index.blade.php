@@ -30,7 +30,15 @@
                     <p class="font-normal text-gray-700 line-clamp-3 mb-4">{{ $ad->description }}</p>
                     <div class="flex justify-between items-center mt-4">
                          <span class="font-bold text-lg">{{ $ad->price ? '€' . number_format($ad->price, 2) : 'Na upit' }}</span>
-                         <span class="text-sm text-gray-600">{{ $ad->category }}</span>
+                         <div class="flex flex-col items-end">
+                             <span class="text-sm text-gray-600">{{ $ad->category }}</span>
+                             @if($ad->location)
+                                 <span class="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                     {{ $ad->location }}
+                                 </span>
+                             @endif
+                         </div>
                     </div>
                 </a>
                 @empty

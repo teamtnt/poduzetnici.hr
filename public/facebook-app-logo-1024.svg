@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poduzetnici.hr logo">
-    <rect width="100%" height="100%" fill="#ffffff"/>
-    <text
-        x="50%"
-        y="50%"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-family="Outfit, 'Plus Jakarta Sans', sans-serif"
-        font-weight="700"
-        font-size="120"
-        fill="#0f172a"
-    >
-        Poduzetnici<tspan fill="#14b8a6">.hr</tspan>
-    </text>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+  role="img" aria-label="Poduzetnici.hr logo">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Outfit, 'Plus Jakarta Sans', sans-serif"
+    font-weight="700"
+    font-size="120"
+    fill="#0f172a"
+  > Poduzetnici<tspan fill="#14b8a6">.hr</tspan>
+  </text>
 </svg>

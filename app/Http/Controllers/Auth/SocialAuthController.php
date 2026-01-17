@@ -28,7 +28,7 @@ class SocialAuthController extends Controller
         // Account Merge Logic
         if ($user) {
             // Update social ID if missing
-            $socialIdColumn = $driver . '_id';
+            $socialIdColumn = $driver.'_id';
             if (empty($user->$socialIdColumn)) {
                 $user->update([
                     $socialIdColumn => $socialUser->getId(),
@@ -40,7 +40,7 @@ class SocialAuthController extends Controller
             // Create New User
             $nameParts = explode(' ', $socialUser->getName() ?? 'Korisnik');
             $firstname = array_shift($nameParts);
-            $lastname = !empty($nameParts) ? implode(' ', $nameParts) : '';
+            $lastname = ! empty($nameParts) ? implode(' ', $nameParts) : '';
 
             $user = User::create([
                 'firstname' => $firstname,
@@ -48,7 +48,7 @@ class SocialAuthController extends Controller
                 'email' => $socialUser->getEmail(),
                 'password' => bcrypt(Str::random(16)),
                 'account_type' => 'person', // Default to person
-                $driver . '_id' => $socialUser->getId(),
+                $driver.'_id' => $socialUser->getId(),
                 'avatar' => $socialUser->getAvatar(),
                 'email_verified_at' => now(),
             ]);
