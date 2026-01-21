@@ -1,0 +1,108 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Update version in composer.json
+        id: version
+        run: |
+          VERSION=$(php -r '
+            $file = "composer.json";
+            $json = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            
+            $versionParts = explode(".", $json["version"] ?? "0.0.0");
+            if (count($versionParts) < 3) {
+                $versionParts = array_pad($versionParts, 3, "0");
+            }
+            
+            $versionParts[count($versionParts) - 1]++;
+            $newVersion = implode(".", $versionParts);
+            
+            $json["version"] = $newVersion;
+            if (!isset($json["extra"])) $json["extra"] = [];
+            $json["extra"]["releaseDate"] = date("d.m.Y");
+            
+            file_put_contents($file, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+            
+            echo $newVersion;
+          ')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $VERSION"
+
+      - name: Commit version bump
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add composer.json
+          git diff --staged --quiet || git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
+          git push
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ steps.version.outputs.version }}
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/build/dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Digital Ocean
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    
+    steps:
+      - name: Deploy to Digital Ocean App Platform
+        uses: digitalocean/app_action@v2
+        with:
+          app_name: ${{ vars.DIGITALOCEAN_APP_NAME }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
