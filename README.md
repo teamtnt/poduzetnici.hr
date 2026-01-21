@@ -57,3 +57,5 @@ This application is built to facilitate growth and collaboration. Whether you ar
 The project uses a custom Tailwind configuration with:
 -   **Fonts**: 'Outfit' (Headings) and 'Plus Jakarta Sans' (Body).
 -   **Colors**: Primary Teal (`#14b8a6`) and Dark Slate (`#0f172a`) palette.
+
+## Test
