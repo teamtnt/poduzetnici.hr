@@ -7,16 +7,20 @@
                     <div>
                         <div class="flex items-center gap-3 mb-2">
                             <a href="{{ route('dashboard') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
                             </a>
                             <h1 class="text-2xl font-bold text-gray-900">Postavke profila</h1>
                         </div>
                         <p class="text-gray-500">Upravljajte svojim podacima i postavkama računa.</p>
                     </div>
-                    
-                    @if($user->slug && $user->is_public)
+
+                    @if ($user->slug && $user->is_public)
                         <a href="{{ route('profile.show', $user->slug) }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white rounded-xl text-sm font-medium hover:bg-primary-700 transition-all">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
                             Pogledaj javni profil
                         </a>
                     @endif
@@ -28,9 +32,9 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Main Column -->
                 <div class="lg:col-span-2 space-y-6">
-                    
+
                     <!-- Public Profile Visibility Card -->
-                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden" x-data="{ 
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden" x-data="{
                         isPublic: {{ $user->is_public ? 'true' : 'false' }},
                         loading: false,
                         async toggle() {
@@ -55,31 +59,32 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors" :class="isPublic ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'">
-                                        <svg x-show="isPublic" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                        <svg x-show="!isPublic" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                        <svg x-show="isPublic" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
+                                        </svg>
+                                        <svg x-show="!isPublic" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                        </svg>
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-900" x-text="isPublic ? 'Profil je javan' : 'Profil je privatan'"></h3>
                                         <p class="text-sm text-gray-500" x-text="isPublic ? 'Vidljiv na stranici /poduzetnici' : 'Nije vidljiv drugim korisnicima'"></p>
                                     </div>
                                 </div>
-                                <button 
-                                    @click="toggle()" 
-                                    :disabled="loading"
+                                <button @click="toggle()" :disabled="loading"
                                     class="relative inline-flex h-7 w-14 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
-                                    :class="isPublic ? 'bg-green-500' : 'bg-gray-200'"
-                                >
+                                    :class="isPublic ? 'bg-green-500' : 'bg-gray-200'">
                                     <span class="sr-only">Toggle public</span>
-                                    <span 
-                                        class="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                                        :class="isPublic ? 'translate-x-7' : 'translate-x-0'"
-                                    ></span>
+                                    <span class="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out" :class="isPublic ? 'translate-x-7' : 'translate-x-0'"></span>
                                 </button>
                             </div>
-                            
+
                             <div x-show="isPublic" x-collapse class="mt-4 p-4 bg-green-50 rounded-xl border border-green-100">
                                 <div class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
                                     <p class="text-sm text-green-800">Vaš profil je sada vidljiv u <a href="{{ route('profiles.index') }}" class="font-medium underline hover:text-green-900">bazi poduzetnika</a> i drugi korisnici ga mogu pronaći.</p>
                                 </div>
                             </div>
@@ -141,22 +146,17 @@
                                     <h2 class="text-lg font-semibold text-gray-900">URL profila</h2>
                                     <p class="text-sm text-gray-500 mt-0.5">Jedinstvena adresa vašeg javnog profila.</p>
                                 </div>
-                                <button 
-                                    type="button" 
-                                    @click="generateSlug()"
-                                    :disabled="checking"
-                                    class="text-sm font-medium text-primary-600 hover:text-primary-700 disabled:opacity-50"
-                                >
+                                <button type="button" @click="generateSlug()" :disabled="checking" class="text-sm font-medium text-primary-600 hover:text-primary-700 disabled:opacity-50">
                                     <span x-show="!checking">Generiraj automatski</span>
                                     <span x-show="checking">Učitavam...</span>
                                 </button>
                             </div>
                         </div>
-                        
+
                         <form method="post" action="{{ route('profile.update') }}" class="p-6">
                             @csrf
                             @method('patch')
-                            
+
                             <div class="space-y-4">
                                 <div>
                                     <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">Slug</label>
@@ -164,28 +164,27 @@
                                         <span class="inline-flex items-center px-4 bg-gray-50 text-gray-500 text-sm border-r border-gray-300">
                                             poduzetnici.hr/profile/
                                         </span>
-                                        <input 
-                                            type="text" 
-                                            id="slug" 
-                                            name="slug" 
-                                            x-model="slug"
-                                            @input.debounce.500ms="checkSlug()"
-                                            placeholder="vas-jedinstveni-slug"
-                                            class="flex-1 border-0 focus:ring-0 py-3 px-4 text-gray-900"
-                                        >
+                                        <input type="text" id="slug" name="slug" x-model="slug" @input.debounce.500ms="checkSlug()" placeholder="vas-jedinstveni-slug" class="flex-1 border-0 focus:ring-0 py-3 px-4 text-gray-900">
                                         <div class="flex items-center px-3">
                                             <span x-show="checking" class="text-gray-400">
-                                                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
                                             </span>
                                             <span x-show="!checking && available === true" class="text-green-500">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
                                             </span>
                                             <span x-show="!checking && available === false" class="text-red-500">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
                                             </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="mt-2 flex items-center gap-2">
                                         <p x-show="available === true" class="text-sm text-green-600">✓ Ovaj slug je dostupan</p>
                                         <p x-show="available === false" class="text-sm text-red-600">✗ Ovaj slug je već zauzet</p>
@@ -211,7 +210,7 @@
                             </h2>
                             <p class="text-sm text-gray-500 mt-0.5">Osnovne informacije koje se prikazuju na vašem profilu.</p>
                         </div>
-                        
+
                         <form id="send-verification" method="post" action="{{ route('verification.send') }}">
                             @csrf
                         </form>
@@ -220,7 +219,7 @@
                             @csrf
                             @method('patch')
 
-                            @if($user->account_type === 'company')
+                            @if ($user->account_type === 'company')
                                 <!-- Company Name -->
                                 <div>
                                     <x-input-label for="company_name" :value="__('Naziv tvrtke / obrta')" />
@@ -256,7 +255,7 @@
                                 <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
                                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-                                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+                                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                                     <div class="mt-2">
                                         <p class="text-sm text-amber-600">
                                             Email adresa nije verificirana.
@@ -291,7 +290,7 @@
                             <h2 class="text-lg font-semibold text-gray-900">Detalji javnog profila</h2>
                             <p class="text-sm text-gray-500 mt-0.5">Informacije vidljive drugim korisnicima na platformi.</p>
                         </div>
-                        
+
                         <form method="post" action="{{ route('profile.update') }}" class="p-6 space-y-5">
                             @csrf
                             @method('patch')
@@ -301,7 +300,7 @@
                                 <x-input-label for="industry" :value="__('Djelatnost')" />
                                 <select id="industry" name="industry" class="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-lg shadow-sm">
                                     <option value="">Odaberite djelatnost</option>
-                                    @foreach(['IT / Programiranje', 'Dizajn', 'Marketing', 'Računovodstvo', 'Pravo', 'Građevina', 'Usluge čišćenja', 'Edukacija', 'Zdravlje i ljepota', 'Turizam i ugostiteljstvo', 'Prijevoz i logistika', 'Ostalo'] as $ind)
+                                    @foreach (['IT / Programiranje', 'Dizajn', 'Marketing', 'Računovodstvo', 'Pravo', 'Građevina', 'Usluge čišćenja', 'Edukacija', 'Zdravlje i ljepota', 'Turizam i ugostiteljstvo', 'Prijevoz i logistika', 'Ostalo'] as $ind)
                                         <option value="{{ $ind }}" {{ old('industry', $user->industry) === $ind ? 'selected' : '' }}>{{ $ind }}</option>
                                     @endforeach
                                 </select>
@@ -360,22 +359,22 @@
                                     {{ strtoupper(substr($user->company_name ?: $user->firstname ?: 'K', 0, 1)) }}
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-gray-900">{{ $user->company_name ?: ($user->firstname . ' ' . $user->lastname) ?: 'Vaše ime' }}</h3>
-                                    @if($user->industry)
+                                    <h3 class="font-bold text-gray-900">{{ $user->company_name ?: $user->firstname . ' ' . $user->lastname ?: 'Vaše ime' }}</h3>
+                                    @if ($user->industry)
                                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-50 text-primary-700 mt-1">{{ $user->industry }}</span>
                                     @else
                                         <span class="text-sm text-gray-400">Djelatnost nije odabrana</span>
                                     @endif
                                 </div>
                             </div>
-                            
-                            @if($user->description)
+
+                            @if ($user->description)
                                 <p class="text-sm text-gray-600 mb-4 line-clamp-3">{{ $user->description }}</p>
                             @else
                                 <p class="text-sm text-gray-400 mb-4 italic">Niste dodali opis profila</p>
                             @endif
 
-                            @if($user->slug && $user->is_public)
+                            @if ($user->slug && $user->is_public)
                                 <a href="{{ route('profile.show', $user->slug) }}" target="_blank" class="block w-full py-2.5 px-4 bg-primary-600 text-white rounded-xl font-medium transition-colors text-sm text-center hover:bg-primary-700">
                                     Otvori javni profil ↗
                                 </a>
@@ -396,7 +395,7 @@
                         <div class="px-6 py-5 border-b border-gray-100">
                             <h2 class="font-semibold text-gray-900">Promjena lozinke</h2>
                         </div>
-                        
+
                         <form method="post" action="{{ route('password.update') }}" class="p-6 space-y-4">
                             @csrf
                             @method('put')
@@ -432,7 +431,9 @@
                     <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
                         <div class="flex items-start gap-3">
                             <div class="p-2 bg-blue-100 rounded-lg text-blue-600 flex-shrink-0">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                             </div>
                             <div>
                                 <h3 class="font-semibold text-blue-900 text-sm">Tip računa</h3>
@@ -450,12 +451,8 @@
                             <p class="text-sm text-gray-600 mb-4">
                                 Trajno brisanje računa i svih povezanih podataka. Ova radnja se ne može poništiti.
                             </p>
-                            
-                            <x-danger-button
-                                x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-                                class="w-full justify-center"
-                            >Obriši račun</x-danger-button>
+
+                            <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')" class="w-full justify-center">Obriši račun</x-danger-button>
                         </div>
                     </div>
                 </div>
@@ -475,13 +472,7 @@
             </p>
 
             <div class="mt-4">
-                <x-text-input
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="block w-full"
-                    placeholder="Vaša lozinka"
-                />
+                <x-text-input id="password" name="password" type="password" class="block w-full" placeholder="Vaša lozinka" />
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
             </div>
 

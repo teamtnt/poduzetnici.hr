@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,8 +28,8 @@ class Ad extends Model
 
     protected $casts = [
         'expires_at' => 'datetime',
-        'price' => 'decimal:2',
-        'images' => 'array',
+        'price'      => 'decimal:2',
+        'images'     => 'array',
     ];
 
     public function user(): BelongsTo

@@ -12,7 +12,7 @@
                 <div class="md:col-span-1 space-y-6">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <div class="text-center">
-                            @if($user->avatar)
+                            @if ($user->avatar)
                                 <img src="{{ $user->avatar }}" alt="{{ $user->firstname }}" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
                             @else
                                 <div class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-4">
@@ -31,28 +31,28 @@
                                 <p class="text-gray-600 text-sm mt-1">{{ $user->description ?? 'Nema opisa.' }}</p>
                             </div>
 
-                            @if($user->address)
+                            @if ($user->address)
                                 <div>
                                     <h4 class="text-sm font-semibold text-gray-700">Adresa</h4>
                                     <p class="text-gray-600 text-sm mt-1">{{ $user->address }}</p>
                                 </div>
                             @endif
 
-                            @if($user->phone)
+                            @if ($user->phone)
                                 <div>
                                     <h4 class="text-sm font-semibold text-gray-700">Telefon</h4>
                                     <a href="tel:{{ $user->phone }}" class="text-primary-500 hover:underline text-sm">{{ $user->phone }}</a>
                                 </div>
                             @endif
 
-                            @if($user->email)
+                            @if ($user->email)
                                 <div>
                                     <h4 class="text-sm font-semibold text-gray-700">Email</h4>
                                     <a href="mailto:{{ $user->email }}" class="text-primary-500 hover:underline text-sm">{{ $user->email }}</a>
                                 </div>
                             @endif
 
-                            @if($user->web)
+                            @if ($user->web)
                                 <div>
                                     <h4 class="text-sm font-semibold text-gray-700">Web</h4>
                                     <a href="{{ $user->web }}" target="_blank" class="text-primary-500 hover:underline text-sm">{{ $user->web }}</a>
@@ -61,16 +61,9 @@
                         </div>
                     </div>
 
-                    @if($user->address)
+                    @if ($user->address)
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg overflow-hidden">
-                            <iframe 
-                                width="100%" 
-                                height="300" 
-                                frameborder="0" 
-                                scrolling="no" 
-                                marginheight="0" 
-                                marginwidth="0" 
-                                src="https://maps.google.com/maps?q={{ urlencode($user->address) }}&t=&z=15&ie=UTF8&iwloc=&output=embed">
+                            <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q={{ urlencode($user->address) }}&t=&z=15&ie=UTF8&iwloc=&output=embed">
                             </iframe>
                         </div>
                     @endif
@@ -80,9 +73,9 @@
                 <div class="md:col-span-2 space-y-6">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4">Aktivni oglasi</h3>
-                        @if($activeAds->count() > 0)
+                        @if ($activeAds->count() > 0)
                             <div class="grid grid-cols-1 gap-4">
-                                @foreach($activeAds as $ad)
+                                @foreach ($activeAds as $ad)
                                     <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors duration-150 flex justify-between items-start">
                                         <div>
                                             <div class="flex items-center gap-2 mb-1">
@@ -98,7 +91,7 @@
                                             <div class="flex items-center gap-4 text-xs text-gray-500">
                                                 <span>{{ $ad->created_at->diffForHumans() }}</span>
                                                 <span>{{ $ad->views_count }} pregleda</span>
-                                                @if($ad->price)
+                                                @if ($ad->price)
                                                     <span class="font-bold text-gray-800">{{ number_format($ad->price, 2) }} €</span>
                                                 @endif
                                             </div>

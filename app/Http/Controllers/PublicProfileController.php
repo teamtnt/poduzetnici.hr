@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -33,6 +32,29 @@ class PublicProfileController extends Controller
             $query->where('industry', $request->input('industry'));
         }
 
+        // Filter by Account Type
+        if ($request->filled('account_type')) {
+            $query->where('account_type', $request->input('account_type'));
+        }
+
+        // Filter by has website
+        if ($request->filled('has_website')) {
+            $query->whereNotNull('web')->where('web', '!=', '');
+        }
+
+        // Filter by has phone
+        if ($request->filled('has_phone')) {
+            $query->whereNotNull('phone')->where('phone', '!=', '');
+        }
+
+        // Sorting
+        $sort = $request->input('sort', 'newest');
+        if ($sort === 'name') {
+            $query->orderByRaw('COALESCE(company_name, CONCAT(firstname, " ", lastname)) ASC');
+        } else {
+            $query->latest();
+        }
+
         // Get industries for filter dropdown
         $industries = [
             'IT / Programiranje',
@@ -49,7 +71,7 @@ class PublicProfileController extends Controller
             'Ostalo',
         ];
 
-        $users = $query->latest()->paginate(12)->withQueryString();
+        $users = $query->paginate(12)->withQueryString();
 
         return view('profiles.index', compact('users', 'industries'));
     }
@@ -59,7 +81,7 @@ class PublicProfileController extends Controller
      */
     public function show($slug): View
     {
-        $user = User::where('slug', $slug)->firstOrFail();
+        $user      = User::where('slug', $slug)->firstOrFail();
         $activeAds = $user->ads()->active()->latest()->get();
 
         return view('profile.show', compact('user', 'activeAds'));

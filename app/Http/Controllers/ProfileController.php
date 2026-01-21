@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
@@ -49,7 +48,7 @@ class ProfileController extends Controller
             'slug' => ['required', 'string', 'max:255'],
         ]);
 
-        $slug = Str::slug($request->input('slug'));
+        $slug   = Str::slug($request->input('slug'));
         $userId = $request->user()->id;
 
         $exists = User::where('slug', $slug)
@@ -57,8 +56,8 @@ class ProfileController extends Controller
             ->exists();
 
         return response()->json([
-            'available' => ! $exists,
-            'slug' => $slug,
+            'available' => !$exists,
+            'slug'      => $slug,
         ]);
     }
 
@@ -67,8 +66,8 @@ class ProfileController extends Controller
      */
     public function togglePublic(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $user->is_public = ! $user->is_public;
+        $user            = $request->user();
+        $user->is_public = !$user->is_public;
         $user->save();
 
         return response()->json([
@@ -84,15 +83,15 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $baseName = $user->account_type === 'company'
-            ? ($user->company_name ?: 'tvrtka')
-            : (($user->firstname ?? '').' '.($user->lastname ?? '') ?: 'korisnik');
+        ? ($user->company_name ?: 'tvrtka')
+        : (($user->firstname ?? '') . ' ' . ($user->lastname ?? '') ?: 'korisnik');
 
         $baseSlug = Str::slug($baseName);
-        $slug = $baseSlug;
-        $counter = 1;
+        $slug     = $baseSlug;
+        $counter  = 1;
 
         while (User::where('slug', $slug)->where('id', '!=', $user->id)->exists()) {
-            $slug = $baseSlug.'-'.$counter;
+            $slug = $baseSlug . '-' . $counter;
             $counter++;
         }
 

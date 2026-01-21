@@ -35,7 +35,7 @@
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800">
                         {{ __('Your email address is unverified.') }}
@@ -64,20 +64,7 @@
             <x-input-label for="industry" :value="__('Djelatnost / Kategorija')" />
             <select id="industry" name="industry" class="mt-1 block w-full border-gray-300 focus:border-primary-500 focus:ring-primary-500 rounded-md shadow-sm">
                 <option value="">Odaberite djelatnost</option>
-                @foreach([
-                    'IT / Programiranje',
-                    'Dizajn',
-                    'Marketing',
-                    'Računovodstvo',
-                    'Pravo',
-                    'Građevina',
-                    'Usluge čišćenja',
-                    'Edukacija',
-                    'Zdravlje i ljepota',
-                    'Turizam i ugostiteljstvo',
-                    'Prijevoz i logistika',
-                    'Ostalo'
-                ] as $ind)
+                @foreach (['IT / Programiranje', 'Dizajn', 'Marketing', 'Računovodstvo', 'Pravo', 'Građevina', 'Usluge čišćenja', 'Edukacija', 'Zdravlje i ljepota', 'Turizam i ugostiteljstvo', 'Prijevoz i logistika', 'Ostalo'] as $ind)
                     <option value="{{ $ind }}" {{ old('industry', $user->industry) === $ind ? 'selected' : '' }}>{{ $ind }}</option>
                 @endforeach
             </select>
@@ -123,13 +110,7 @@
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-sm text-gray-600">{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>

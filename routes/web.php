@@ -38,13 +38,13 @@ Route::delete('/ads/{id}', [AdController::class, 'destroy'])->name('ads.destroy'
 Route::post('/upload/signed-url', [UploadController::class, 'signedUrl'])->name('upload.signed-url')->middleware('auth');
 
 Route::get('/dashboard', function () {
-    $user = auth()->user();
-    $ads = $user->ads()->latest()->get();
-    $totalViews = $user->ads()->sum('views_count');
-    $activeAds = $user->ads()->active()->count();
-    $expiredAds = $user->ads()->where('expires_at', '<=', now())->count();
+    $user           = auth()->user();
+    $ads            = $user->ads()->latest()->get();
+    $totalViews     = $user->ads()->sum('views_count');
+    $activeAds      = $user->ads()->active()->count();
+    $expiredAds     = $user->ads()->where('expires_at', '<=', now())->count();
     $unreadMessages = $user->receivedMessages()->unread()->with(['sender', 'ad'])->latest()->take(5)->get();
-    $unreadCount = $user->unreadMessagesCount();
+    $unreadCount    = $user->unreadMessagesCount();
 
     return view('dashboard', compact('user', 'ads', 'totalViews', 'activeAds', 'expiredAds', 'unreadMessages', 'unreadCount'));
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -96,4 +96,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/generate-slug', [ProfileController::class, 'generateSlug'])->name('profile.generate-slug');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

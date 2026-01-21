@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Feature;
 
 use App\Models\User;
@@ -31,8 +30,8 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'firstname' => 'Test',
-                'lastname' => 'User',
-                'email' => 'test@example.com',
+                'lastname'  => 'User',
+                'email'     => 'test@example.com',
             ]);
 
         $response
@@ -57,8 +56,8 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'company_name' => 'Test Company d.o.o.',
-                'oib' => '12345678901',
-                'email' => 'company@example.com',
+                'oib'          => '12345678901',
+                'email'        => 'company@example.com',
             ]);
 
         $response
@@ -82,8 +81,8 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'firstname' => 'Test',
-                'lastname' => 'User',
-                'email' => $user->email,
+                'lastname'  => 'User',
+                'email'     => $user->email,
             ]);
 
         $response

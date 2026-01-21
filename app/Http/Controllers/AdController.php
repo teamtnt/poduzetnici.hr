@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
 {
@@ -22,34 +20,34 @@ class AdController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'type' => 'required|in:offer,demand',
-            'category' => 'required|string|in:Prodaja poslovanja,Partnerstva,Oprema i alati,Usluge,Oglasni prostor,Pitanja i odgovori',
-            'location' => 'required|string|max:255',
-            'price' => 'nullable|numeric|min:0',
-            'duration_days' => 'required|integer|in:7,14,30',
-            'is_anonymous' => 'nullable|boolean',
-            'uploaded_images' => 'nullable|array|max:5',
+            'title'             => 'required|string|max:255',
+            'description'       => 'required|string',
+            'type'              => 'required|in:offer,demand',
+            'category'          => 'required|string|in:Prodaja poslovanja,Partnerstva,Oprema i alati,Usluge,Oglasni prostor,Pitanja i odgovori',
+            'location'          => 'required|string|max:255',
+            'price'             => 'nullable|numeric|min:0',
+            'duration_days'     => 'required|integer|in:7,14,30',
+            'is_anonymous'      => 'nullable|boolean',
+            'uploaded_images'   => 'nullable|array|max:5',
             'uploaded_images.*' => 'url',
         ]);
 
-        $slug = \Illuminate\Support\Str::slug($validated['title']).'-'.uniqid();
+        $slug = \Illuminate\Support\Str::slug($validated['title']) . '-' . uniqid();
 
         $images = $request->input('uploaded_images', []);
 
         $request->user()->ads()->create([
-            'title' => $validated['title'],
-            'slug' => $slug,
-            'description' => $validated['description'],
-            'images' => $images,
-            'type' => $validated['type'],
-            'category' => $validated['category'],
-            'location' => $validated['location'],
-            'price' => $validated['price'] ?? null,
+            'title'         => $validated['title'],
+            'slug'          => $slug,
+            'description'   => $validated['description'],
+            'images'        => $images,
+            'type'          => $validated['type'],
+            'category'      => $validated['category'],
+            'location'      => $validated['location'],
+            'price'         => $validated['price'] ?? null,
             'duration_days' => $validated['duration_days'],
-            'expires_at' => now()->addDays((int) $validated['duration_days']),
-            'is_anonymous' => $request->boolean('is_anonymous'),
+            'expires_at'    => now()->addDays((int) $validated['duration_days']),
+            'is_anonymous'  => $request->boolean('is_anonymous'),
         ]);
 
         return redirect()->route('ads.index')->with('status', 'Ad created successfully!');
@@ -66,7 +64,7 @@ class AdController extends Controller
         }
 
         // Increment view count (don't count owner's views)
-        if (! auth()->check() || auth()->id() !== $ad->user_id) {
+        if (!auth()->check() || auth()->id() !== $ad->user_id) {
             $ad->incrementViews();
         }
 
@@ -93,15 +91,15 @@ class AdController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'type' => 'required|in:offer,demand',
-            'category' => 'required|string|in:Prodaja poslovanja,Partnerstva,Oprema i alati,Usluge,Oglasni prostor,Pitanja i odgovori',
-            'price' => 'nullable|numeric|min:0',
-            'is_anonymous' => 'nullable|boolean',
-            'uploaded_images' => 'nullable|array|max:5',
+            'title'             => 'required|string|max:255',
+            'description'       => 'required|string',
+            'type'              => 'required|in:offer,demand',
+            'category'          => 'required|string|in:Prodaja poslovanja,Partnerstva,Oprema i alati,Usluge,Oglasni prostor,Pitanja i odgovori',
+            'price'             => 'nullable|numeric|min:0',
+            'is_anonymous'      => 'nullable|boolean',
+            'uploaded_images'   => 'nullable|array|max:5',
             'uploaded_images.*' => 'url',
-            'existing_images' => 'nullable|array',
+            'existing_images'   => 'nullable|array',
         ]);
 
         $images = array_merge(
@@ -110,13 +108,13 @@ class AdController extends Controller
         );
 
         $ad->update([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'type' => $validated['type'],
-            'category' => $validated['category'],
-            'price' => $validated['price'],
+            'title'        => $validated['title'],
+            'description'  => $validated['description'],
+            'type'         => $validated['type'],
+            'category'     => $validated['category'],
+            'price'        => $validated['price'],
             'is_anonymous' => $request->boolean('is_anonymous'),
-            'images' => array_slice($images, 0, 5),
+            'images'       => array_slice($images, 0, 5),
         ]);
 
         return redirect()->route('ads.show', $ad->id)->with('status', 'Oglas uspješno ažuriran!');

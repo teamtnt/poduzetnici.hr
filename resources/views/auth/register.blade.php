@@ -23,15 +23,13 @@
                     <div class="grid grid-cols-2 gap-4 p-1 bg-gray-50 rounded-xl border border-gray-200">
                         <label class="cursor-pointer">
                             <input type="radio" name="account_type" value="person" class="sr-only" x-model="accountType">
-                            <div class="text-center py-2.5 rounded-lg text-sm font-bold transition-all"
-                                :class="accountType === 'person' ? 'bg-white text-primary-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:text-gray-700'">
+                            <div class="text-center py-2.5 rounded-lg text-sm font-bold transition-all" :class="accountType === 'person' ? 'bg-white text-primary-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:text-gray-700'">
                                 Fizička osoba
                             </div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="account_type" value="company" class="sr-only" x-model="accountType">
-                            <div class="text-center py-2.5 rounded-lg text-sm font-bold transition-all"
-                                :class="accountType === 'company' ? 'bg-white text-primary-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:text-gray-700'">
+                            <div class="text-center py-2.5 rounded-lg text-sm font-bold transition-all" :class="accountType === 'company' ? 'bg-white text-primary-600 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:text-gray-700'">
                                 Tvrtka / Obrt
                             </div>
                         </label>
@@ -87,10 +85,7 @@
                     <div>
                         <x-input-label for="password" :value="__('Lozinka')" />
                         <div class="mt-1">
-                            <x-text-input id="password" class="block w-full"
-                                            type="password"
-                                            name="password"
-                                            required autocomplete="new-password" />
+                            <x-text-input id="password" class="block w-full" type="password" name="password" required autocomplete="new-password" />
                         </div>
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
@@ -99,9 +94,7 @@
                     <div>
                         <x-input-label for="password_confirmation" :value="__('Potvrdite lozinku')" />
                         <div class="mt-1">
-                            <x-text-input id="password_confirmation" class="block w-full"
-                                            type="password"
-                                            name="password_confirmation" required autocomplete="new-password" />
+                            <x-text-input id="password_confirmation" class="block w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                         </div>
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
