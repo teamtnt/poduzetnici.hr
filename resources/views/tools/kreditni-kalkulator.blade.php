@@ -1,11 +1,12 @@
 <x-app-layout>
-    <x-slot name="title">Kreditni kalkulator</x-slot>
-    <x-slot name="description">Besplatni kreditni kalkulator - izračunajte mjesečnu ratu, ukupne kamate i plan otplate kredita. Jednostavan alat za simulaciju kredita bez registracije.</x-slot>
-    <x-slot name="keywords">kreditni kalkulator, izračun kredita, mjesečna rata, kamatna stopa, plan otplate, simulacija kredita</x-slot>
+    <x-slot name="title">Kreditni Kalkulator - Izračun Rate Kredita i Kamate</x-slot>
+    <x-slot name="description">Besplatan kreditni kalkulator za precizan izračun rate kredita i računanje kamate. Jednostavan alat za kalkulator kredita s detaljnim planom otplate.</x-slot>
+    <x-slot name="keywords">izračun rate kredita, kreditni kalkulator, izracun rate kredita, kalkulator kredita, racunanje kamate za kredit, otplatni plan</x-slot>
     <x-slot name="structuredData">@@json([
         '@@context' => 'https://schema.org',
         '@@type' => 'WebApplication',
-        'name' => 'Kreditni kalkulator',
+        'name' => 'Kreditni Kalkulator - Izračun Rate Kredita',
+        'description' => 'Besplatan kalkulator kredita za izračun rate kredita i računanje kamate za kredit. Jednostavan i brz financijski alat.',
         'url' => route('tools.kreditni-kalkulator'),
         'applicationCategory' => 'FinanceApplication',
         'operatingSystem' => 'Web',
@@ -123,13 +124,58 @@
 
         .calc-grid {
             display: grid;
-            grid-template-columns: 1fr 400px;
+            grid-template-columns: minmax(0, 1fr) 400px;
             gap: 2rem;
         }
 
         @media (max-width: 1024px) {
             .calc-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calc-hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .calc-main {
+                padding: 1rem;
+            }
+
+            .calc-card,
+            .results-card {
+                padding: 1.25rem;
+                border-radius: 0.75rem;
+            }
+
+            .input-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .number-input {
+                font-size: 1.25rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .monthly-payment {
+                font-size: 2.25rem;
+                word-break: break-word;
+            }
+
+            .stats-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .slider::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+                margin-top: -10px;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 28px;
+                height: 28px;
             }
         }
 
@@ -139,6 +185,8 @@
             border: 1px solid var(--border-color);
             border-radius: 1.25rem;
             padding: 2rem;
+            min-width: 0;
+            /* Enables shrinking in grid/flex */
         }
 
         .calc-card-header {
@@ -262,18 +310,45 @@
         /* Slider */
         .slider-wrapper {
             position: relative;
-            padding: 0.5rem 0;
+            padding-top: 12px;
+            padding-bottom: 24px;
+            isolation: isolate;
+        }
+
+        /* Background Track */
+        .slider-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--bg-input);
+            border-radius: 4px;
+            z-index: 0;
         }
 
         .slider {
             -webkit-appearance: none;
             appearance: none;
+            display: block;
             width: 100%;
             height: 8px;
-            background: var(--bg-input);
+            background: transparent;
             border-radius: 4px;
             outline: none;
             cursor: pointer;
+            position: relative;
+            z-index: 2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: transparent;
         }
 
         .slider::-webkit-slider-thumb {
@@ -286,6 +361,7 @@
             cursor: grab;
             box-shadow: 0 2px 8px rgba(20, 184, 166, 0.4);
             transition: transform 0.15s, box-shadow 0.15s;
+            margin-top: -8px;
         }
 
         .slider::-webkit-slider-thumb:hover {
@@ -296,6 +372,13 @@
         .slider::-webkit-slider-thumb:active {
             cursor: grabbing;
             transform: scale(1.15);
+        }
+
+        .slider::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            cursor: pointer;
         }
 
         .slider::-moz-range-thumb {
@@ -310,13 +393,13 @@
 
         .slider-track {
             position: absolute;
-            top: 50%;
+            top: 12px;
             left: 0;
             height: 8px;
             background: linear-gradient(90deg, var(--accent-dark), var(--accent));
             border-radius: 4px;
-            transform: translateY(-50%);
             pointer-events: none;
+            z-index: 1;
         }
 
         .slider-labels {
@@ -393,6 +476,7 @@
         .breakdown-legend {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 1.5rem;
             margin-top: 1rem;
         }
@@ -449,6 +533,8 @@
             font-size: 1.125rem;
             font-weight: 600;
             color: var(--text-primary);
+            word-break: break-all;
+            word-wrap: break-word;
         }
 
         .stat-value.highlight {
@@ -466,6 +552,8 @@
             justify-content: space-between;
             align-items: center;
             text-align: left;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .stat-item.full .stat-label {
@@ -524,6 +612,7 @@
         .amort-table-wrapper {
             max-height: 400px;
             overflow-y: auto;
+            overflow-x: auto;
             border: 1px solid var(--border-color);
             border-radius: 12px;
         }
@@ -678,8 +767,8 @@
                     </svg>
                     Natrag na alate
                 </a>
-                <h1>Kreditni <span>Kalkulator</span></h1>
-                <p>Izračunajte mjesečnu ratu, ukupne kamate i plan otplate za vaš kredit ili hipoteku.</p>
+                <h1>Kreditni <span>Kalkulator</span> - Izračun Rate Kredita</h1>
+                <p>Precizan kalkulator kredita za računanje kamate i mjesečne rate. Dobijte detaljan izračun i plan otplate za vaš kredit.</p>
             </div>
         </div>
 
@@ -826,7 +915,7 @@
                     <!-- Amortization Toggle -->
                     <div class="amort-toggle">
                         <button type="button" class="amort-toggle-btn" id="amort-toggle">
-                            <span>Prikaži plan otplate</span>
+                            <span>Prikaži otplatni plan kredita</span>
                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -840,10 +929,10 @@
                                 <thead>
                                     <tr>
                                         <th>Godina</th>
-                                        <th>Rata</th>
-                                        <th>Glavnica</th>
+                                        <th>Mjesečna Rata</th>
+                                        <th>Otplata Glavnice</th>
                                         <th>Kamata</th>
-                                        <th>Ostatak</th>
+                                        <th>Ostatak Duga</th>
                                     </tr>
                                 </thead>
                                 <tbody id="amort-body">

@@ -12,7 +12,7 @@
             <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl"></div>
         </div>
 
-        <div class="relative z-10 max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-16 pb-40 sm:pt-32 sm:pb-56 text-center">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
 
 
             <h1 class="mt-8 sm:mt-12 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-8 font-display leading-tight">
